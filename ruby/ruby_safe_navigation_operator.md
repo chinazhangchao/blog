@@ -1,3 +1,5 @@
+[//]: # (Ruby 安全调用运算符 (&.))
+
 今天在阅读discourse源码时，看到其中有很多地方使用`&.`符号，如：
 ```ruby
 result << types[:whisper] if viewed_by&.staff?
