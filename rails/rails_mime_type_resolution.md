@@ -1,9 +1,10 @@
 [//]: # (Rails中的MIME类型解析)
 
-在项目中遇到了一个MIME解析相关的问题，在此记录一下。
+本文缘于在项目中遇到的问题，结合了网上的资料和Rails源码，一并做个总结。
 
 # 相关背景
 Rails项目中经常可以看到如下代码：
+
 ```ruby
 respond_to do |format|
   format.html
@@ -190,18 +191,24 @@ private
   end
 ```
 
-通过以上代码，可以看出，Rails对返回格式的判断过程。
+通过以上代码，可以看出，Rails对返回格式的判断流程。
 
 1. 请求是否带format后缀，如果带，则使用相应格式。如：http://localhost:3000/users.xml 
 2. 请求是否有Accept头并且是合法头，如果是，则解析Accept。
+3. 暂时没研究`format_from_path_extension`的含义，欢迎大家补充（^_^）。
+4. 请求是否是Ajax调用，如果是，返回js格式数据。
+5. 以上都不满足，则默认返回html。
 
 ## 原因
 Rails为什么要对浏览器的请求做特殊处理？搜索的资料显示是因为早起浏览器设计不规范，大部分请求头Accept字段第一个值是`application/xml`，如果按照规则就会给浏览器用户返回xml格式的数据，而不通常不是浏览器用户想要的。
 
 ## Accept总结
-### 1. Accept头是\*/\*
-### 2. Accept不包含\*/\*
+### 1. Accept不包含\*/\*
+
+### 2. Accept头是\*/\*
+
 ### 3. Accept头包含\*/\*和其他内容
+
 ### 4. Ajax
 
 
@@ -210,7 +217,5 @@ Rails为什么要对浏览器的请求做特殊处理？搜索的资料显示是
 [https://blog.bigbinary.com/2010/11/23/mime-type-resolution-in-rails.html](https://blog.bigbinary.com/2010/11/23/mime-type-resolution-in-rails.html)
 
 [https://github.com/rails/rails/issues/9940](https://github.com/rails/rails/issues/9940)
-
-[https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Accept](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Accept)
 
 [https://tools.ietf.org/html/rfc7231#section-5.3.1](https://tools.ietf.org/html/rfc7231#section-5.3.1)
