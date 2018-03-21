@@ -38,7 +38,7 @@ Chrome: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/a
 Chrome的头表明它可以处理html文档（text/html）、xhtml文档（application/xhtml+xml）、xml文档（application/xml）、webp和apng格式的图片，以及其它别的格式。
 
 Accept头里面有一个q值，它表示优先级。HTTP标准里面是这么描述的（[https://tools.ietf.org/html/rfc7231#section-5.3.1](https://tools.ietf.org/html/rfc7231#section-5.3.1)）：
->5.3.1.  Quality Values
+> 5.3.1.  Quality Values
 
 >   Many of the request header fields for proactive negotiation use a common parameter, named "q" (case-insensitive), to assign a relative "weight" to the preference for that associated kind of content.  This weight is referred to as a "quality value" (or "qvalue") because the same parameter name is often used within server configurations to assign a weight to the relative quality of the various representations that can be selected for a resource.
 
@@ -182,14 +182,18 @@ private
 通过以上代码，可以大体看出Rails对返回格式的判断流程：
 
 1. 判断请求是否带format后缀，如果带，则返回相应格式。如：http://localhost:3000/users.xml。
-2. 判断请求是否有Accept头并且是合法头，如果是，则解析Accept，返回Accept中的格式。
-3. 判断请求是否有`format_from_path_extension`的格式，不好意思，这个暂时没来得及研究是啥，欢迎大神们补充^\_^。
-4. 判断请求是否是Ajax调用，如果是，返回javascript格式数据。
-5. 以上都不满足，返回html格式。
+1. 判断请求是否有Accept头并且是合法头，如果是，则解析Accept，返回Accept中的格式。
+1. 判断请求是否有`format_from_path_extension`的格式，不好意思，这个暂时没来得及研究是啥，欢迎大神们补充^\_^。
+1. 判断请求是否是Ajax调用，如果是，返回javascript格式数据。
+1. 以上都不满足，返回html格式。
 
 ## 对浏览器的特殊处理
 
-从上面的代码里看到，Rails对浏览器发出的请求做了特殊处理，如果是浏览器发出的，则不解析Accept头。为什么要对浏览器的请求做特殊处理？查阅的资料显示是因为早期浏览器设计不规范，大部分浏览器的请求头Accept字段第一个值是`application/xml`，如果按照Accept解析就会给浏览器用户返回xml格式的数据，而这通常不是浏览器用户想要的。因此判断如果是浏览器就直接忽略Accept头。
+从上面的代码里看到，Rails对浏览器发出的请求做了特殊处理，如果是浏览器发出的，则不解析Accept头。
+为什么要对浏览器的请求做特殊处理？查阅的资料显示是因为早期浏览器设计不规范，
+大部分浏览器的请求头Accept字段第一个值是`application/xml`，
+如果按照Accept解析就会给浏览器用户返回xml格式的数据，
+而这通常不是浏览器用户想要的。因此判断如果是浏览器就直接忽略Accept头。
 
 最后总结一下Accept的三种情形。
 
