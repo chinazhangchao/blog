@@ -44,3 +44,9 @@ ruby --enable=frozen-string-literal t.rb
 (-"").frozen?
 => true
 ```
+
+参考资料：
+
+http://flats.github.io/blog/2016/01/03/frozen-strings/
+
+http://ruby-performance-book.com/blog/2016/02/is-ruby-2-3-faster-frozen-string-literals-performance.html
